@@ -60,7 +60,7 @@ function paged_read_lines($page_num = 0, $page_size = 300, &$is_last_page = true
         fseek($handle, $pos, SEEK_SET);
         $line_count = 0;$ret = array();
         while ((($buffer = fgets($handle)) !== false) && $line_count < $page_size) {
-            $ret[] = $buffer;
+            $ret[] = htmlspecialchars($buffer);
             $line_count++;
         }
         fclose($handle);
