@@ -41,8 +41,10 @@
 <script type="text/javascript">
     $(function() {
         //滚到最低
-        var bottom = $('#bottom');
-        bottom.offsetParent().scrollTop(bottom.offset().top - 50);
+        var scrollBottom = function() {
+            var bottom = $('#bottom');
+            bottom.offsetParent().scrollTop(bottom.offset().top - 50);
+        }
 
         $('#write_log').submit(function(){
             $.post('<?php echo get_baseurl() ?>/index.php?m=save',
@@ -54,6 +56,7 @@
                         } else {
                             $('#content').append('<p class="error">'+resp.info+'</p>');
                         }
+                        scrollBottom();
                     }, 'json');
             return false;
         });
@@ -64,6 +67,8 @@
                 $("form").submit();
             }
         });
+
+        scrollBottom();
     });
 </script>
 </body>
