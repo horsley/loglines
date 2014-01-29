@@ -47,14 +47,19 @@
         }
 
         $('#write_log').submit(function(){
+            if ($.trim($('#line_recv').val()) == "") {
+                return false;
+            }
             $.post('<?php echo get_baseurl() ?>/index.php?m=save',
                     $('#write_log').serialize(),
                     function(resp){
-                        if(resp.ok) {
-                            $('#content').append('<p>'+resp.info+'</p>');
-                            $('#line_recv').val('');
-                        } else {
-                            $('#content').append('<p class="error">'+resp.info+'</p>');
+                        if(resp !== null){
+                            if(resp.ok) {
+                                $('#content').append('<p>'+resp.info+'</p>');
+                                $('#line_recv').val('');
+                            } else {
+                                $('#content').append('<p class="error">'+resp.info+'</p>');
+                            }
                         }
                         scrollBottom();
                     }, 'json');
