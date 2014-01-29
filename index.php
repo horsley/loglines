@@ -62,7 +62,7 @@ function m_save() {
             $log_line = "{$time}{$_POST['log_line']}\n";
 
             if(file_put_contents(DATA_FILE, $log_line, FILE_APPEND|LOCK_EX)) {
-                die(json_encode(array('ok' => true, 'info' => $log_line)));
+                die(json_encode(array('ok' => true, 'info' => htmlspecialchars($log_line))));
             } else {
                 die(json_encode(array('ok' => false, 'info' => $time.'Write File Error!')));
             }

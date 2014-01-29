@@ -27,7 +27,7 @@
 <div id="scrollContainer">
     <div id="content">
         <?php if(!empty($logs)) foreach($logs as $l): ?>
-        <p><?php echo nl2br(htmlspecialchars($l)) ?></p>
+        <p><?php echo htmlspecialchars($l) ?></p>
         <?php endforeach; ?>
     </div>
     <div id="bottom"></div>
