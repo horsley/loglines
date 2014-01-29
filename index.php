@@ -61,12 +61,11 @@ function m_index() {
 function m_save() {
     if (is_ajax() && is_post()) {
         $_POST['log_line'] = isset($_POST['log_line']) ? trim($_POST['log_line']) : '';
-        $_POST['log_line'] = mb_substr($_POST['log_line'], 0, 300, 'UTF-8');
+        $_POST['log_line'] = mb_substr($_POST['log_line'], 0, 300, 'UTF-8'); //限制单行长度
         if (!empty($_POST['log_line'])) {
             $time = date('[Y/m/d H:i:s] ');
-            $log_line = "{$time}{$_POST['log_line']}\n";
-
-            if(file_put_contents(DATA_FILE, $log_line, FILE_APPEND|LOCK_EX)) {
+            $log_line = "{$time}{$_POST['log_line']}\n"; //追加日期格式
+            if(write_line($log_line)) {
                 die(json_encode(array('ok' => true, 'info' => htmlspecialchars($log_line))));
             } else {
                 die(json_encode(array('ok' => false, 'info' => $time.'Write File Error!')));
