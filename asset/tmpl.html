@@ -42,8 +42,7 @@
     $(function() {
         //滚到最低
         var scrollBottom = function() {
-            var bottom = $('#bottom');
-            bottom.offsetParent().scrollTop(bottom.offset().top - 50);
+            $('#bottom').get(0).scrollIntoView(true);
         }
 
         $('#write_log').submit(function(){
@@ -61,7 +60,7 @@
                                 $('#content').append('<p class="error">'+resp.info+'</p>');
                             }
                         }
-                        //scrollBottom(); 滚动问题暂时不知道怎么处理
+                        scrollBottom();
                     }, 'json');
             return false;
         });
