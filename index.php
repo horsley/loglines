@@ -29,7 +29,7 @@ if (!file_exists(CONFIG_FILE) || !is_readable(CONFIG_FILE)) {
 //                           路由分发                               //
 //////////////////////////////////////////////////////////////////////
 if (empty($_GET['m']) || !in_array($_GET['m'], array(
-        'save'
+        'save', 'load'
     ))) {
     $module = 'index'; //默认路由
 } else {
@@ -48,8 +48,10 @@ if (function_exists($func_name) && is_callable($func_name)) {
  * 入口页
  */
 function m_index() {
+    $data = paged_read_lines(0, config()->page_size, $last_page);
     tmpl_render(ASSET_DIR.'/tmpl.html',array(
-            'logs' => paged_read_lines(0, config()->page_size),
+            'logs' => $data,
+            'last_page' => $last_page,
         ));
 }
 
@@ -75,6 +77,22 @@ function m_save() {
     }
 }
 
+/**
+ * ajax加载前一页
+ */
+function m_load() {
+    if (is_ajax()) {
+        $page = intval($_GET['p']);
+        if (empty($page)) {
+            die('Invalid Page Number');
+        }
 
+        $data = paged_read_lines($page, config()->page_size, $last_page);
+        echo json_encode(array(
+            'data' => $data,
+            'last_page' => $last_page,
+        ));
+    }
+}
 
 
