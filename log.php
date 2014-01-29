@@ -72,6 +72,7 @@ function paged_read_lines($page_num = 0, $page_size = 300, &$is_last_page = true
 }
 
 function write_line($log_line) { //@todo: 这里再并发情况下没办法保持写入索引和数据事务的一致性，应该用一个另外的锁
+    if (!file_exists(DATA_INDEX)) file_put_contents(DATA_INDEX, pack('L', 0), FILE_APPEND|LOCK_EX); //所以首次写入应该有0
     if (!file_put_contents(DATA_FILE, $log_line, FILE_APPEND|LOCK_EX)) return false;
     if (!file_put_contents(DATA_INDEX, pack('L', filesize(DATA_FILE)), FILE_APPEND|LOCK_EX)) return false;
     return true;
