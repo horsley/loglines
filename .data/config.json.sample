@@ -1,6 +1,7 @@
 {
     "realm": "Private Area",
     "title": "Log4Me",
+    "page_size": 300,
     "user": [
         {
             "username": "horsley",

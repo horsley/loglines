@@ -10,8 +10,10 @@ define('DATA_DIR', APP_ROOT . '/.data');
 define('ASSET_DIR', APP_ROOT . '/asset');
 define('CONFIG_FILE', DATA_DIR.'/config.json');
 define('DATA_FILE', DATA_DIR.'/data.log');
+define('DATA_INDEX', DATA_DIR.'/data.idx');
 
 require APP_ROOT.'/func.php';
+require APP_ROOT.'/log.php';
 
 
 if (!file_exists(CONFIG_FILE) || !is_readable(CONFIG_FILE)) {
@@ -47,7 +49,7 @@ if (function_exists($func_name) && is_callable($func_name)) {
  */
 function m_index() {
     tmpl_render(ASSET_DIR.'/tmpl.html',array(
-            'logs' => file_exists(DATA_FILE) ? file(DATA_FILE) : array(),
+            'logs' => paged_read_lines(0, config()->page_size),
         ));
 }
 
