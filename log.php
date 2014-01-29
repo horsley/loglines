@@ -46,7 +46,7 @@ function paged_read_lines($page_num = 0, $page_size = 300, &$is_last_page = true
     fseek($handle, - ($page_num + 1) * $page_size * 4 - 4, SEEK_END); //如果页数太大肯定会seek到开头
     if (ftell($handle) == 0) {
         $is_last_page = true;
-        $page_size = ($total_lines - 1) % $page_size; //最后一页条目数量的特殊处理
+        $page_size = $total_lines % $page_size; //最后一页条目数量的特殊处理
     } else {
         $is_last_page = false;
     }
