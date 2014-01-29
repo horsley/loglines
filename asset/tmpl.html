@@ -28,7 +28,7 @@
 <body>
 <div id="scrollContainer">
     <div>
-        <?php if (!$last_page): ?>
+        <?php if (!empty($logs) && !$last_page): ?>
             <a id="load_more" href="#" data-page="0">Load More...</a>
         <?php endif; ?>
     </div>
