@@ -49,6 +49,11 @@
             if ($.trim($('#line_recv').val()) == "") {
                 return false;
             }
+            if (typeof this.lock != 'undefined' && this.lock === true) {
+                return false;
+            } else {
+                this.lock = true;
+            }
             $.post('<?php echo get_baseurl() ?>/index.php?m=save',
                     $('#write_log').serialize(),
                     function(resp){
@@ -62,6 +67,7 @@
                         }
                         scrollBottom();
                     }, 'json');
+            this.lock = false;
             return false;
         });
 
