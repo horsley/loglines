@@ -57,6 +57,7 @@ function m_index() {
 function m_save() {
     if (is_ajax() && is_post()) {
         $_POST['log_line'] = isset($_POST['log_line']) ? trim($_POST['log_line']) : '';
+        $_POST['log_line'] = mb_substr($_POST['log_line'], 0, 300, 'UTF-8');
         if (!empty($_POST['log_line'])) {
             $time = date('[Y/m/d H:i:s] ');
             $log_line = "{$time}{$_POST['log_line']}\n";
