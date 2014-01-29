@@ -45,14 +45,15 @@
             $('#bottom').get(0).scrollIntoView(true);
         }
 
+        var lock = false;
         $('#write_log').submit(function(){
             if ($.trim($('#line_recv').val()) == "") {
                 return false;
             }
-            if (typeof this.lock != 'undefined' && this.lock === true) {
+            if (lock) {
                 return false;
             } else {
-                this.lock = true;
+                lock = true;
             }
             $.post('<?php echo get_baseurl() ?>/index.php?m=save',
                     $('#write_log').serialize(),
@@ -67,7 +68,7 @@
                         }
                         scrollBottom();
                     }, 'json');
-            this.lock = false;
+            lock = false;
             return false;
         });
 
