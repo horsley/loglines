@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteRule ^\..* - [F] #保护.开头的目录，例如.git
+</IfModule>

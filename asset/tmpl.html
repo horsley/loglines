@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title><?php echo config()->title ?></title>
+    <link rel="stylesheet" href="<?php echo get_baseurl()?>/asset/pure-min.css">
+    <style>
+        html, body {height: 100%; padding: 0; }
+        html {width: 100%; overflow: hidden; margin: 0; }
+        body {position: relative; }
+        #scrollContainer {overflow: auto; position:absolute; top: 0; bottom: 2em; width: 100%; }
+
+        body{background: #111;color: #999;margin: 0;font: 16px/1.3 Menlo, Monaco, Consolas, "Courier New", monospace}
+        #ctrl_bar{position: fixed;width: 100%;bottom: 0;background: #000;}
+        #ctrl_bar input{height: 2em;color: #fff;background: #000;font: 16px/1.8 Menlo, Monaco, Consolas, "Courier New", monospace}
+        #line_recv{margin: 0;border: 0;display: block;width: 100%;outline: none}
+        p.error{color: #800000}
+        #content p {margin: 0;}
+        #content {padding: 0.3em}
+        @media screen and (max-width: 480px) {
+            body{font: 12px/1.3}
+        }
+    </style>
+</head>
+<body>
+<div id="scrollContainer">
+    <div id="content">
+        <?php if(!empty($logs)) foreach($logs as $l): ?>
+        <p><?php echo nl2br($l) ?></p>
+        <?php endforeach; ?>
+    </div>
+    <div id="bottom"></div>
+</div>
+<div id="ctrl_bar">
+    <form id="write_log">
+        <input type="text" id="line_recv" placeholder="Input Here~" name="log_line">
+    </form>
+</div>
+<script type="text/javascript" src="<?php echo get_baseurl() ?>/asset/zepto.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        //滚到最低
+        var bottom = $('#bottom');
+        bottom.offsetParent().scrollTop(bottom.offset().top - 50);
+
+        $('#write_log').submit(function(){
+            $.post('<?php echo get_baseurl() ?>/index.php?m=save',
+                    $('#write_log').serialize(),
+                    function(resp){
+                        if(resp.ok) {
+                            $('#content').append('<p>'+resp.info+'</p>');
+                            $('#line_recv').val('');
+                        } else {
+                            $('#content').append('<p class="error">'+resp.info+'</p>');
+                        }
+                    }, 'json');
+            return false;
+        });
+
+        $('#line_recv').keypress(function(event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("form").submit();
+            }
+        });
+    });
+</script>
+</body>
+</html>
