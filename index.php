@@ -38,6 +38,7 @@ if (empty($_GET['m']) || !in_array($_GET['m'], array(
 
 $func_name = 'm_'.$module;
 if (function_exists($func_name) && is_callable($func_name)) {
+    session_start();
     call_user_func($func_name);
 } else {
     die('405 Method Not Allowed');
@@ -48,6 +49,7 @@ if (function_exists($func_name) && is_callable($func_name)) {
  * 入口页
  */
 function m_index() {
+    session_commit();
     $data = paged_read_lines(0, config()->page_size, $last_page);
     tmpl_render(ASSET_DIR.'/tmpl.html',array(
             'logs' => $data,
@@ -60,6 +62,14 @@ function m_index() {
  */
 function m_save() {
     if (is_ajax() && is_post()) {
+        //这里做些简单的限制吧
+        //简单防相同内容刷屏（后面加点随机的东西就可以了）
+        if (isset($_SESSION['last_post']) && $_SESSION['last_post'] == $_POST['log_line']) {
+            die(json_encode(array('ok' => false, 'info' => '不要发重复内容撒!')));
+        } else {
+            $_SESSION['last_post'] = $_POST['log_line'];
+            session_commit();
+        }
         $_POST['log_line'] = isset($_POST['log_line']) ? trim($_POST['log_line']) : '';
         $_POST['log_line'] = mb_substr($_POST['log_line'], 0, 300, 'UTF-8'); //限制单行长度
         if (!empty($_POST['log_line'])) {
