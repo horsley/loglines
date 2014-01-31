@@ -67,7 +67,8 @@ function m_save() {
             $log_line = "{$time}{$_POST['log_line']}\n"; //追加日期格式
             if(write_line($log_line)) {
                 //广播过程
-                $ch = curl_init(get_baseurl().":8421/pub?line=".urlencode(htmlspecialchars($log_line)));
+                $broadcast_url = "http://127.0.0.1:8421/pub?line=".urlencode(htmlspecialchars($log_line));
+                $ch = curl_init($broadcast_url);
                 curl_setopt_array($ch, array(
                     CURLOPT_RETURNTRANSFER => true
                 ));
