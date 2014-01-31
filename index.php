@@ -66,6 +66,13 @@ function m_save() {
             $time = date('[Y/m/d H:i:s] ');
             $log_line = "{$time}{$_POST['log_line']}\n"; //追加日期格式
             if(write_line($log_line)) {
+                //广播过程
+                $ch = curl_init(get_baseurl().":8421/pub?line=".urlencode(htmlspecialchars($log_line)));
+                curl_setopt_array($ch, array(
+                    CURLOPT_RETURNTRANSFER => true
+                ));
+                curl_exec($ch);
+
                 die(json_encode(array('ok' => true, 'info' => htmlspecialchars($log_line))));
             } else {
                 die(json_encode(array('ok' => false, 'info' => $time.'Write File Error!')));

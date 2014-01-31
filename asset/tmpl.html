@@ -68,7 +68,7 @@
                     function(resp){
                         if(resp !== null){
                             if(resp.ok) {
-                                $('#content').append('<p>'+resp.info+'</p>');
+                                //$('#content').append('<p>'+resp.info+'</p>'); 自己发的内容通过广播接收
                                 $('#line_recv').val('');
                             } else {
                                 $('#content').append('<p class="error">'+resp.info+'</p>');
@@ -110,6 +110,14 @@
 
             return false;
         });
+
+        //自动更新
+        (function poll(){
+            $.ajax({ url: "<?php echo get_baseurl() ?>:8421/sub", success: function(data){
+                $('#content').append('<p>'+data+'</p>');
+                scrollBottom();
+            }, complete: poll, timeout: 30000 });
+        })();
 
         //默认滚到底部
         scrollBottom();
