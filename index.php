@@ -66,8 +66,11 @@ function m_save() {
         //简单防相同内容刷屏（后面加点随机的东西就可以了）
         if (isset($_SESSION['last_post']) && $_SESSION['last_post'] == $_POST['log_line']) {
             die(json_encode(array('ok' => false, 'info' => '不要发重复内容撒!')));
+        } else if(isset($_SESSION['last_post_ts']) && $_SESSION['last_post_ts'] > time() - 1) {
+            die(json_encode(array('ok' => false, 'info' => '不要发太快撒!')));
         } else {
             $_SESSION['last_post'] = $_POST['log_line'];
+            $_SESSION['last_post_ts'] = time();
             session_commit();
         }
         $_POST['log_line'] = isset($_POST['log_line']) ? trim($_POST['log_line']) : '';
