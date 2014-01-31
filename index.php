@@ -4,7 +4,7 @@
  * @author: horsley
  * @version: 2014-01-28
  */
-
+date_default_timezone_set('Asia/Shanghai');
 define('APP_ROOT', dirname(__FILE__));
 define('DATA_DIR', APP_ROOT . '/.data');
 define('ASSET_DIR', APP_ROOT . '/asset');
