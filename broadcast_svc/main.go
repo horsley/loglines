@@ -36,7 +36,7 @@ func onSub(w http.ResponseWriter, req *http.Request) {
 			return
 		case <-cn.CloseNotify():
 			log.Println("Client", req.RemoteAddr, "disconnected")
-			break
+			return
 		}
 	}
 }
@@ -44,7 +44,7 @@ func onSub(w http.ResponseWriter, req *http.Request) {
 func onPub(w http.ResponseWriter, req *http.Request) {
 
 	if !strings.HasPrefix(req.RemoteAddr, "127.0.0.1") {
-		w.Write([]byte("Broadcast from localhost ONLY!"))
+		w.Write([]byte("Broadcast from localhost ONLY! You are" + req.RemoteAddr))
 		return
 	}
 
