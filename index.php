@@ -21,9 +21,9 @@ if (!file_exists(CONFIG_FILE) || !is_readable(CONFIG_FILE)) {
 }
 
 //简单身份验证
-//simple_auth(array(
-//    config()->user->username => config()->user->password
-//), config()->realm);
+simple_auth(array(
+    config()->user->username => config()->user->password
+), config()->realm);
 
 //////////////////////////////////////////////////////////////////////
 //                           路由分发                               //

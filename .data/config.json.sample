@@ -2,10 +2,8 @@
     "realm": "Private Area",
     "title": "Log4Me",
     "page_size": 300,
-    "user": [
-        {
-            "username": "horsley",
-            "password": "123456"
-        }
-    ]
+    "user": {
+        "username": "horsley",
+        "password": "123456"
+    }
 }
